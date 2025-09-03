@@ -93,10 +93,10 @@ class WordSearch:
 
         # use the deepest prefix node to collect and return all the matches
         results = []
-        self._collect_words(node, prefix, results)
+        self.__collect_words(node, prefix, results)
         return results
 
-    def _collect_words(self, node, current_prefix, results):
+    def __collect_words(self, node, current_prefix, results):
         """
         iterate through branches of the current found prefix and
         collect words containing the prefix
@@ -109,7 +109,7 @@ class WordSearch:
 
         # use recursion to collect all the words
         for char, child in node.children.items():
-            self._collect_words(child, current_prefix + char, results)
+            self.__collect_words(child, current_prefix + char, results)
 
     def get_prefix_counts(self, prefix):
         """
