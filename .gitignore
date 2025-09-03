@@ -1,6 +1,0 @@
-.gitignore
-.git
-*.idea
-*pycache*
-.coverage
-cmds.txt
