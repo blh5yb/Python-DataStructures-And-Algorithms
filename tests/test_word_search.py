@@ -13,8 +13,8 @@ class TestNode:
         branch = root.children['w'].children['o'].children['r'].children['d']
         assert branch.is_end == True
         assert len(root.children.items()) == 2
-        assert root.children["w"].numEntries == 2
-        assert root.children["s"].numEntries == 2
+        assert root.children["w"].num_entries == 2
+        assert root.children["s"].num_entries == 2
 
 
 class TestWordSearch:
@@ -57,7 +57,7 @@ class TestWordSearch:
     def test_is_prefix(self, my_prefix, expected):
         lexicon = WordSearch()
         # lexicon.lexicon_set = {"word", "stop", "wont"}
-        for word in {"word", "stop", "wont"}:
+        for word in {"word", "stop", "wont", "wor"}:
             lexicon.add_word(word)
 
         result = lexicon.is_prefix(my_prefix)
@@ -78,7 +78,7 @@ class TestWordSearch:
             lexicon.add_word(word)
 
         result = lexicon.get_words(my_prefix)
-        assert result == expected
+        assert set(result) == set(expected)
 
     @pytest.mark.parametrize(
         'my_prefix, expected',

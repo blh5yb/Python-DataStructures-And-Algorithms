@@ -13,6 +13,7 @@ class PriorityQueue:
     then by timestamp - higher priority given to first entered when priority
     value is equal
     """
+    __slots__ = ['queue']
     def __init__(self):
         """Initialize the queue"""
         self.queue = []

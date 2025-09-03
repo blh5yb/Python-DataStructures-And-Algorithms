@@ -6,10 +6,11 @@
 
 
 class Node:
+    __slots__ = ['children', 'is_end', 'num_entries']
     def __init__(self):
         self.children = {} # new node
         self.is_end = False # to track words the match the pattern
-        self.numEntries = 0 # How many matching prefixes
+        self.num_entries = 0 # How many matching prefixes
         return
 
     def insert(self, key):
@@ -25,7 +26,7 @@ class Node:
 
         # get the current node for first char
         child = self.children[first_char]
-        child.numEntries += 1
+        child.num_entries += 1
 
         # recursively insert til reach the end of word
         if len(key) > 1:
@@ -39,6 +40,7 @@ class WordSearch:
     """
     Module to add words to a tree and set and efficient check for matching words/ patterns
     """
+    __slots__ = ['lexicon_set', 'root']
     def __init__(self):
         self.lexicon_set = set() # for exact matching
         self.root = Node()
@@ -122,6 +124,6 @@ class WordSearch:
             if not node.children.get(char):
                 return 0
             node = node.children[char]
-            prefix_count = node.numEntries
+            prefix_count = node.num_entries
 
         return prefix_count
