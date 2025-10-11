@@ -56,7 +56,7 @@ class TestPriorityQueue:
         queue = PriorityQueue()
         time_fixture.return_value = 10.1
         queue.enqueue('id1', 4)
-        result = queue.queue
+        result = queue.get_queue()
 
         assert result == [{'_id': 'id1', 'priority': 4, 'timestamp': 10.1}]
 
@@ -72,10 +72,12 @@ class TestPriorityQueue:
         Test the constructor value of self.queue variable is updated correctly by enqueue function
         """
         queue = PriorityQueue()
-        queue.queue = queue_items[:4]
+        for item in queue_items[:4]:
+            time_fixture.return_value = item['timestamp']
+            queue.enqueue(item['_id'], item['priority'])
         time_fixture.return_value = queue_items[-1]['timestamp']
         queue.enqueue(queue_items[-1]['_id'], queue_items[-1]['priority'])
-        result = queue.queue
+        result = queue.get_queue()
 
         assert result == sorted_queue
 
@@ -87,14 +89,16 @@ class TestPriorityQueue:
             ([], None, [])
         ]
     )
-    def test_dequeue(self, queue_items, dequed_item, updated_queue):
+    def test_dequeue(self, queue_items, dequed_item, updated_queue, time_fixture):
         """Test dequeue'ing first item or return None if queue is empty"""
         queue = PriorityQueue()
-        queue.queue = queue_items
+        for item in queue_items:
+            time_fixture.return_value = item['timestamp']
+            queue.enqueue(item['_id'], item['priority'])
 
         result = queue.dequeue()
         assert result == dequed_item # first item from the queue
-        assert queue.queue == updated_queue # queue[1:] or None
+        assert queue.get_queue() == updated_queue # queue[1:] or None
 
     @pytest.mark.parametrize(
         'queue_items, updated_queue, target_id, new_priority',
@@ -103,8 +107,10 @@ class TestPriorityQueue:
             (queue_three_sorted, queue_three_sorted, 'not_found_id', 2) # not updated
         ]
     )
-    def test_priority_update(self, queue_items, updated_queue, target_id, new_priority):
+    def test_priority_update(self, queue_items, updated_queue, target_id, new_priority, time_fixture):
         queue = PriorityQueue()
-        queue.queue = queue_items
+        for item in queue_items:
+            time_fixture.return_value = item['timestamp']
+            queue.enqueue(item['_id'], item['priority'])
         queue.update_priority(target_id, new_priority)
-        assert queue.queue == updated_queue
+        assert queue.get_queue() == updated_queue

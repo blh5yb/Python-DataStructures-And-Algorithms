@@ -13,10 +13,13 @@ class PriorityQueue:
     then by timestamp - higher priority given to first entered when priority
     value is equal
     """
-    __slots__ = ['queue']
+    __slots__ = ['__queue']
     def __init__(self):
         """Initialize the queue"""
-        self.queue = []
+        self.__queue = []
+
+    def get_queue(self):
+        return self.__queue
 
     def enqueue(self, _id, priority):
         """
@@ -25,7 +28,7 @@ class PriorityQueue:
         :param priority: priority of the item added to the queue
         """
         current_timestamp = time.time()
-        self.queue.append({
+        self.__queue.append({
             '_id': _id,
             'priority': priority,
             'timestamp': current_timestamp
@@ -34,10 +37,10 @@ class PriorityQueue:
 
     def dequeue(self):
         """Remove and return highest priority item"""
-        if not len(self.queue):
+        if not len(self.__queue):
             return None
 
-        item = self.queue.pop(0)
+        item = self.__queue.pop(0)
         return item
 
     def update_priority(self, target_id, new_priority):
@@ -46,14 +49,14 @@ class PriorityQueue:
         :param target_id: _id of item to update, str
         :param new_priority: new priority to assign to the item, int
         """
-        found_index = next((index for index, item in enumerate(self.queue) if item['_id'] == target_id), None)
+        found_index = next((index for index, item in enumerate(self.__queue) if item['_id'] == target_id), None)
         if found_index is not None:
-            self.queue[found_index]['priority'] = new_priority
+            self.__queue[found_index]['priority'] = new_priority
             self.__sort_queue()
 
     def __sort_queue(self):
         """private method to sort queue by priority and then by timestamp for equal priorities"""
-        self.queue.sort(key=lambda obj: (obj['priority'], obj['timestamp']))
+        self.__queue.sort(key=lambda obj: (obj['priority'], obj['timestamp']))
 
 
 # if __name__ == "__main__":
