@@ -29,6 +29,31 @@ def max_subarr_sum(my_arr):
 
     return res
 
+def max_subarray(nums):
+    curr_sum = nums[0]
+    max_sum = nums[0]
+
+    curr_start = 0
+    best_start = 0
+    best_end = 0
+
+    for i in range(1, len(nums[1:])):
+        x = nums[i]
+        # check if we need to extend or restart
+        if x > x + curr_sum:
+            curr_sum = x
+            curr_start = i
+        else:
+            curr_sum += x
+
+        # check if we have a better array sum
+        if curr_sum > max_sum:
+            max_sum = curr_sum
+            best_start = curr_start
+            best_end = i
+
+    return max_sum, nums[best_start: best_end + 1]
+
 def min_jumps(nums):
     """
     Calculates the minimum number of jumps to reach the end of the array.
