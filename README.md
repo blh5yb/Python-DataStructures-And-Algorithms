@@ -6,6 +6,7 @@
 
 ## Algorithms (To Do)
   - Kadane's algorithm
+  - Prefix Sums
   - Merge Sort
   - binarySearch
 

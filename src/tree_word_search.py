@@ -3,7 +3,52 @@
 # Author: Barry Hykes Jr, bhykes@gmail.com
 # version 1.0.0
 ########################################################################################################################
+from dataclasses import dataclass, field
+from typing import Dict, Tuple, List
 
+
+# Modernized Better version
+
+@dataclass(slots=True)
+class TrieNode:
+    children: Dict[str] = field(default_factory=dict)
+    is_end = False
+
+class WordDictionary:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def add_word(self, word):
+        word = word.lower()
+        node = self.root
+        for char in word:
+            node = node.children.setdefault(char, TrieNode())
+
+        node.is_end = True
+
+    def check_prefix(self, prefix):
+        prefix = prefix.lower()
+        node = self.root
+        for char in prefix:
+            node = node.children.get(char)
+            if not node:
+                return []
+
+        return self._collect_words(node, prefix)
+
+    @staticmethod
+    def _collect_words(node, current_prefix):
+        results = []
+        stack: List[Tuple[TrieNode(), str]] = [(node, current_prefix)]
+
+        while stack:
+            node, current_prefix = stack.pop()
+
+            if node.is_end:
+                results.append(current_prefix)
+
+            for char, node in node.children.items():
+                stack.append((node, current_prefix + char))
 
 class Node:
     __slots__ = ['children', 'is_end', 'num_entries']

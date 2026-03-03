@@ -1,5 +1,4 @@
 import pytest
-from unittest.mock import patch
 from src.tree_word_search import *
 
 
